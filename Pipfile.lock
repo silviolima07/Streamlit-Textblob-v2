@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b559616f0111e67eb0f9668561475e0a05a0ca90defcbd267026a422e157f27b"
+            "sha256": "47345affe9a5f8f104516f85489f8676a2330c09b5b25408a43606e409ba55c2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -199,10 +199,12 @@
         },
         "gtts": {
             "hashes": [
-                "sha256:702ab71664444f583f49649c020e9f387e1cee75fef5173e6b4dd166872e10a7"
+                "sha256:2ca2e880b560767d4ec74281d996ffdeda9012abc99968595b615e309a90cffe",
+                "sha256:e07e1729ca6d26c46d687bc29c321079a90719e1edb1ac25e0c229cd55b44539",
+                "sha256:feaebc9cf64138d68a05b965f2cdb9ea8ee962bbb8237d91c621bf910fc1123c"
             ],
             "index": "pypi",
-            "version": "==1.1.3"
+            "version": "==2.1.1"
         },
         "gtts-token": {
             "hashes": [

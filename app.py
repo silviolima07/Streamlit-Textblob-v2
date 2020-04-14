@@ -171,7 +171,7 @@ def main():
             html = '<img src onerror="{}">'.format(js)
             div = Div(text=html)
             st.bokeh_chart(div)
-
+################################################################################################################
     else:
         # Audioplay
         st.subheader("Text Area")
@@ -187,7 +187,20 @@ def main():
                     original_key = get_key(idioma_original, dict_idioma_full)
                     
                     st.success("Original Language"+":  "+ idioma_original + " ("+original_key+")")
-                    play(raw_text,original_key)
+
+
+                    #play(raw_text,original_key)
+                    
+                    from gtts import gTTS
+                    tts = gTTS(text='bom dia', lang='pt')
+                    tts.save('audio.mp3')
+                    st.write("Audio salvo")
+                    audio_file = open("audio.mp3","rb")
+                    st.write("Audio aberto")
+                    audio_bytes = audio_file.read()
+                    st.write("Audio lido")
+                    st.audio(audio_bytes, format="audio/mp3") 
+
             
                     dict_idioma = lista_idiomas(idioma_original)
                     options = st.multiselect("Choose a language", tuple(dict_idioma.values()))
@@ -202,6 +215,7 @@ def main():
                                 texto_convertido = str(blob.translate(to=idioma_final_key))
                                 st.success("Language"+": "+ value + " ("+idioma_final_key+")")
                                 st.text(texto_convertido)
+                                st.text(idioma_final_key)
                                 play(texto_convertido,idioma_final_key)
                         
                         except:
