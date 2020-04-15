@@ -54,7 +54,7 @@ def play(raw_text, idioma_key):
     tts.save("audio.mp3")
     audio_file = open("audio.mp3","rb")
     audio_bytes = audio_file.read()
-    st.write("To download -> see options on the right side")
+    #st.write("To download -> see options on the right side")
     st.audio(audio_bytes, format="audio/mp3") 
     
 
@@ -139,6 +139,7 @@ def main():
                 if flag != True:
                     st.error("ERROR: text must be at least 3 letters and the word must exist in the formal language")
 
+ #####################################################################################################################
 
     elif choice == 'About':
         st.subheader("I hope you enjoy it and use to learn something")
@@ -153,7 +154,7 @@ def main():
             html = '<img src onerror="{}">'.format(js)
             div = Div(text=html)
             st.bokeh_chart(div)
-################################################################################################################
+   ################################################################################################################
     else:
         # Audioplay
         st.subheader("Text Area")
