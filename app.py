@@ -3,27 +3,18 @@ import streamlit as st
 
 # NLP Pkgs
 from textblob import TextBlob
+
 import pandas as pd
 from PIL import Image
-# Emoji
-import emoji
 
 # Audio
 from gtts import gTTS
 
+# Html link
 from bokeh.models.widgets import Div
 
-# Web Scraping Pkg
-from bs4 import BeautifulSoup
-from urllib.request import urlopen
 
-# Fetch Text From Url
-@st.cache
-def get_text(raw_url):
-    page = urlopen(raw_url)
-    soup = BeautifulSoup(page)
-    fetched_text = ' '.join(map(lambda p:p.text,soup.find_all('p')))
-    return fetched_text
+# Retrieve key and values from dictionary
 
 def get_value( my_key, my_dicts):
     for key, value in my_dicts.items():
@@ -57,16 +48,13 @@ def lista_idiomas_full():
         dict_idiomas[key] = value
     return dict_idiomas
 
-def area_texto():
-    raw_text = st.text_area("Copie e Cole o texto",'cole aqui')
-    return raw_text
-
 
 def play(raw_text, idioma_key):
     tts = gTTS(text=raw_text, lang=idioma_key)
     tts.save("audio.mp3")
     audio_file = open("audio.mp3","rb")
     audio_bytes = audio_file.read()
+    st.write("To download -> see options on the right side")
     st.audio(audio_bytes, format="audio/mp3") 
     
 
@@ -79,7 +67,7 @@ def main():
     image = Image.open("people_speaking.jpg")
     st.sidebar.image(image,caption="Different languages", use_column_width=True)
 
-    activities = ["Detector & Translator","Sound of Voice","About"]
+    activities = ["Detector & Translator","Voice","About"]
     choice = st.sidebar.selectbox("Menu",activities)
 
 
@@ -91,14 +79,8 @@ def main():
         raw_text = st.text_area("Copy&Paste -> Ctrl+Enter",texto_default)
         blob = TextBlob(raw_text)
 
-        # Audioplay
-        #if st.button("Audio"):
-        #    play(raw_text)       
-
+        
         if modo == "For selected languages":
-            #texto_default = 'Texto'
-            #raw_text = st.text_area("Copy&Paste -> Ctrl+Enter",texto_default)
-            #blob = TextBlob(raw_text)
             try:
 
                 if (raw_text == " " or raw_text == "  " or raw_text == "   " or raw_text == "    "):
@@ -121,7 +103,7 @@ def main():
                             texto_convertido = blob.translate(to=idioma_final)
                             st.success("Language"+": "+ value + " ("+idioma_final+")")
                             st.text(texto_convertido)
-                            #play(texto_convertido,idioma_final)
+                            play(texto_convertido,idioma_final)
                     
             except:
                 st.error("ERROR: text must be at least 3 letters and the word must exist in the formal language")
@@ -188,20 +170,10 @@ def main():
                     
                     st.success("Original Language"+":  "+ idioma_original + " ("+original_key+")")
 
-
+                    # Original sound
                     play(raw_text,original_key)
                     
-                    #from gtts import gTTS
-                    #tts = gTTS(text='bom dia', lang='pt')
-                    #tts.save('audio.mp3')
-                    #st.write("Audio salvo")
-                    #audio_file = open("audio.mp3","rb")
-                    #st.write("Audio aberto")
-                    #audio_bytes = audio_file.read()
-                    #st.write("Audio lido")
-                    #st.audio(audio_bytes, format="audio/mp3") 
-
-            
+                              
                     dict_idioma = lista_idiomas(idioma_original)
                     options = st.multiselect("Choose a language", tuple(dict_idioma.values()))
                                       
@@ -214,8 +186,8 @@ def main():
                             if (idioma_original != idioma_final_key):
                                 texto_convertido = str(blob.translate(to=idioma_final_key))
                                 st.success("Language"+": "+ value + " ("+idioma_final_key+")")
-                                st.text(texto_convertido)
-                                st.text(idioma_final_key)
+                                st.write(texto_convertido)
+                                #st.text(idioma_final_key)
                                 play(texto_convertido,idioma_final_key)
                         
                         except:
