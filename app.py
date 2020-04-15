@@ -82,32 +82,36 @@ def main():
         
         if modo == "For selected languages":
             try:
-
+                flag = False
                 if (raw_text == " " or raw_text == "  " or raw_text == "   " or raw_text == "    "):
                     st.error("Please write something in the text area")
                 elif (raw_text != texto_default) and len(raw_text)  > 0 and (raw_text != " " or raw_text != "  " or raw_text != "   " or raw_text != "    "):
                     dict_idioma_full = lista_idiomas_full()
             
                     idioma_original = get_value(blob.detect_language(),dict_idioma_full)
+                    original_key = get_key(idioma_original, dict_idioma_full)
+                    
+                    st.success("Original Language"+":  "+ idioma_original + " ("+original_key+")")
             
                     dict_idioma = lista_idiomas(idioma_original)
                     options = st.multiselect("Choose a language", tuple(dict_idioma.values()))
                     
                     idioma_final = get_key(idioma_original, dict_idioma)
-            
-                    st.write("Original language:",idioma_original)
+                       
                     for i in range(len(options)):
                         value = options[i]
                         idioma_final = get_key(value, dict_idioma)
                         if (idioma_original != idioma_final):
                             texto_convertido = blob.translate(to=idioma_final)
                             st.success("Language"+": "+ value + " ("+idioma_final+")")
-                            st.text(texto_convertido)
-                            play(texto_convertido,idioma_final)
-                    
+                            st.markdown(texto_convertido)
+                            flag = True
+                   
             except:
-                st.error("ERROR: text must be at least 3 letters and the word must exist in the formal language")
+                if flag != True:
+                    st.error("ERROR: text must be at least 3 letters and the word must exist in the formal language")
 
+######################################################################################################################
                     
         else:
             try:
@@ -118,11 +122,16 @@ def main():
                     dict_idioma_full = lista_idiomas_full()
             
                     idioma_original = get_value(blob.detect_language(),dict_idioma_full)
+                    
+                    original_key = get_key(idioma_original, dict_idioma_full)
+                    
+                    st.success("Original Language"+":  "+ idioma_original + " ("+original_key+")")
+
             
                     dict_idioma = lista_idiomas(idioma_original)
                     options = dict_idioma.values()
             
-                    st.write("Original language:",idioma_original)
+                    #st.success("Original Language:"+"idioma_original")
                     idioma_lista = list(options)
                     
                     for i in range(len(idioma_lista)):
