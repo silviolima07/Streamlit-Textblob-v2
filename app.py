@@ -70,6 +70,9 @@ def main():
     activities = ["Detector & Translator","Voice","About"]
     choice = st.sidebar.selectbox("Menu",activities)
 
+    df_idiomas = pd.read_csv('lista_idiomas.csv')
+    #st.write(df_idiomas)
+
 
     if choice == 'Detector & Translator':
         st.subheader("Text Area")
@@ -109,44 +112,63 @@ def main():
                    
             except:
                 if flag != True:
-                    st.error("ERROR: text must be at least 3 letters and the word must exist in the formal language")
+                    st.error("ERROR1: text must be at least 3 letters and the word must exist in the formal language")
 
 ######################################################################################################################
                     
         else:
-            try:
-                flag = False
-                if (raw_text == " " or raw_text == "  " or raw_text == "   " or raw_text == "    "):
-                    st.error("Please write something in the text area")
-                elif (raw_text != texto_default) and len(raw_text)  > 0 and (raw_text != " " or raw_text != "  " or raw_text != "   " or raw_text != "    "):
-                    dict_idioma_full = lista_idiomas_full()
+            #st.write("23 Languages")
+            #try:
+            flag = False
+            texto_convertido="apenas teste"
+            #st.write("Flag at try: "+str(flag))
+            #st.write(raw_text)
+            if (raw_text == " " or raw_text == "  " or raw_text == "   " or raw_text == "    " or raw_text== "     "):
+                st.error("Please write something in the text area")
+                #st.write("Flag after if: "+str(flag))
+            elif (raw_text != texto_default) and len(raw_text)  > 0 and (raw_text != " " or raw_text != "  " or raw_text != "   " or raw_text != "    "):
+
+                #st.write("Flag after if elif: "+str(flag))
+
+                dict_idioma_full = lista_idiomas_full()
             
-                    idioma_original = get_value(blob.detect_language(),dict_idioma_full)
+                idioma_original = str(get_value(blob.detect_language(),dict_idioma_full))
                     
-                    original_key = get_key(idioma_original, dict_idioma_full)
+                original_key = str(get_key(idioma_original, dict_idioma_full))
                     
-                    st.success("Original Language"+":  "+ idioma_original + " ("+original_key+")")
+                #st.success("Original Language"+":  "+(idioma_original) + " ("+original_key+")")
 
             
-                    dict_idioma = lista_idiomas(idioma_original)
-                    options = dict_idioma.values()
+                dict_idioma = lista_idiomas(idioma_original)
+                options = dict_idioma.values()
             
-                    #st.success("Original Language:"+"idioma_original")
-                    idioma_lista = list(options)
-                    
-                    for i in range(len(idioma_lista)):
-                        value = idioma_lista[i]
-                        #st.text(value)
-                        idioma_final = get_key(value, dict_idioma)
-                        if (idioma_original != idioma_final):
-                            texto_convertido = blob.translate(to=idioma_final)
-                            st.success("Language"+": "+ value + " ("+idioma_final+")")
-                            st.text(texto_convertido)
-                            flag = True
-                    
-            except:
-                if flag != True:
-                    st.error("ERROR: text must be at least 3 letters and the word must exist in the formal language")
+                #st.success("Original Language:"+"idioma_original")
+                idioma_lista = list(options)
+                #st.write("Lista idiomas: "+str(idioma_lista))
+                #st.write("size list: "+str(len(idioma_lista)))
+                for i in range(len(idioma_lista)):
+                    #st.write("indice i: "+str(i))
+                    value = idioma_lista[i]
+                    #st.write("Lista de idiomas: "+value)
+                    #st.text(value)
+                    idioma_final = get_key(value, dict_idioma)
+                    #st.write(idioma_original)
+                    #st.write(idioma_final)
+                    if (idioma_original != idioma_final):
+                        #st.write("Convertendo texto")
+                        #st.write(idioma_original != idioma_final)
+                        texto_convertido = blob.translate(to=idioma_final)
+                        st.success("Language"+": "+ value + " ("+idioma_final+")")
+                        st.write(str(texto_convertido))
+                        flag = True
+                        #st.write("Flag after convert: "+str(flag))
+
+            #st.write("Flag after for/convert: "+str(flag))    
+            #except:
+            #    st.write("Flag at except: "+str(flag))
+            #    st.write("Texto convertido: "+str(texto_convertido))
+            #    if flag != True:
+            #        st.error("ERROR2: text must be at least 3 letters and the word must exist in the formal language")
 
  #####################################################################################################################
 
@@ -203,7 +225,7 @@ def main():
                         except:
                             st.error("ERROR: some languages will fail to play the sound.")
         except:
-            st.error("ERROR: text must be at least 3 letters and the word must exist in the formal language")      
+            st.error("ERROR3: text must be at least 3 letters and the word must exist in the formal language")      
 
  
     
